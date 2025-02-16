@@ -1,0 +1,335 @@
+---
+title: "tree"
+output: html_document
+date: "2024-04-13"
+---
+
+```{r}
+library(tree)
+library(ISLR2)
+library(randomForest)
+library(tidyverse)
+library(gbm)
+library(dplyr)
+```
+
+
+```{r}
+data<-load("/Users/tingyu/Desktop/DATA5322/HW/Written Homework 1 Decision Trees/youth_data.Rdata")
+data
+```
+
+```{r}
+str(df)
+```
+
+
+
+## Factor transformation
+```{r}
+data_clean <- df%>%
+  mutate(across(everything(), ~ replace(.x, .x %in% c(993, 991), 0)))
+##
+data_clean <- data_clean%>%
+  mutate(across(c(ircigfm, IRSMKLSS30N, iralcfm, irmjfm), ~ replace(.x, .x %in% c(93, 91), 0)))
+##
+data_clean <- data_clean %>%
+  mutate(across(c(alcmdays, mrjmdays, smklsmdays), ~ replace(.x, .x == 5, 0)))
+##
+data_clean <- data_clean %>%
+  mutate(across(c(alcydays, mrjydays, cigmdays), ~ replace(.x, .x == 6, 0)))
+##
+data_clean <- data_clean %>%
+  mutate(eduskpcom = replace(eduskpcom, eduskpcom %in% c(94, 97, 98, 99), NA))
+```
+
+
+
+
+
+## remove NA
+```{r}
+# This will return a new dataframe 'data_clean' without any rows that contain NA values.
+#data_clean <- df[complete.cases(df), ]
+data_clean  <- na.omit(data_clean)
+```
+
+```{r}
+nrow(data_clean)
+```
+
+
+
+## split data to train dataset and test dataset
+```{r}
+indices <- sample(1:nrow(data_clean), size = 0.7*nrow(data_clean))
+
+# Split data based on indices
+train_data <- data_clean[indices, ]
+test_data <-data_clean[-indices, ]
+```
+
+check if nan
+```{r}
+colSums(is.na(train_data))
+```
+
+
+## binary classification (has or has not used MARIJUANA)
+## Demographic data and whether or not to have used alcohol and tobacco before predicting whether or not to have used MARIJUANA
+
+```{r}
+data_for_model1 <- data_clean[, c("mrjflag","alcflag", "tobflag", demographic_cols,youth_experience_cols)]
+```
+
+```{r}
+indices <- sample(1:nrow(data_for_model1), size = 0.7*nrow(data_for_model1))
+
+# Split data based on indices
+train_data <- data_for_model1[indices, ]
+test_data <-data_for_model1[-indices, ]
+```
+
+```{r}
+all_predictors<- ncol(data_for_model1)-1
+```
+
+```{r}
+ntree_number <- seq(100, 1000, by = 100)
+
+error_rates <- numeric(length(ntree_number))
+
+for (i in 1:length(ntree_number)) {
+  mrjflag_bag <- randomForest(mrjflag ~ ., data = train_data, mtry = all_predictors, ntree = ntree_number[i])
+  yhat <- predict(mrjflag_bag, newdata = test_data, type="class")
+  error_rates[i] <- sum(yhat != test_data$mrjflag) / nrow(test_data)
+}
+
+# Plot the error rates against the number of trees
+plot(ntree_number, error_rates, type = "b", xlab = "Number of Trees (ntree)", ylab = "Error Rate")
+best_ntree_number <- ntree_number[which.min(error_rates)]
+best_ntree_number
+min(error_rates)
+```
+
+
+```{r}
+mrjflag_bag <- randomForest(mrjflag ~ ., data = train_data, mtry = all_predictors, importance = TRUE, ntree = best_ntree_number)
+mrjflag_bag
+```
+
+
+```{r}
+mrjflag.pred <- predict(mrjflag_bag, test_data, type='class')
+accuracy <- 1 - sum(mrjflag.pred != test_data$mrjflag) / nrow(test_data)
+paste("Accuracy:", accuracy)
+```
+
+```{r}
+confusion_matrix <- table(mrjflag.pred, test_data$mrjflag)
+accuracy <- sum(diag(confusion_matrix)) / sum(confusion_matrix)
+confusion_matrix
+print(accuracy)
+```
+
+
+
+```{r}
+importance(mrjflag_bag)
+```
+
+```{r}
+varImpPlot(mrjflag_bag, cex = 0.55)
+```
+
+## single decision tree
+
+```{r}
+tree.mrjflag <- tree(mrjflag ~ ., train_data)
+```
+
+```{r}
+plot(tree.mrjflag)
+text(tree.mrjflag, pretty = 0)
+```
+
+```{r}
+tree.mrjflag
+```
+```{r}
+summary(tree.mrjflag)
+```
+
+
+
+```{r}
+tree.pred <- predict(tree.mrjflag, test_data,
+    type = "class")
+confusion_matrix <- table(tree.pred, test_data$mrjflag)
+accuracy <- sum(diag(confusion_matrix)) / sum(confusion_matrix)
+confusion_matrix
+print(accuracy)
+```
+
+
+
+## multi-class classification (e.g. mrjmdays)
+
+```{r}
+data_for_model2 <- data_clean[, c("mrjmdays", demographic_cols,youth_experience_cols)]
+data_for_model2$mrjmdays <- factor(data_for_model2$mrjmdays)
+```
+
+```{r}
+indices <- sample(1:nrow(data_for_model2), size = 0.7*nrow(data_for_model2))
+
+# Split data based on indices
+train_data <- data_for_model2[indices, ]
+test_data <-data_for_model2[-indices, ]
+```
+
+```{r}
+mtry_values <- seq(1, ncol(train_data), by = 10)  
+error_rates <- numeric(length(mtry_values))
+
+for (i in 1:length(mtry_values)) {
+  mrjmdays_rf <- randomForest(mrjmdays ~ ., data = train_data, mtry = mtry_values[i])
+  yhat <- predict(mrjmdays_rf, newdata = test_data, type="class")
+  error_rates[i] <- sum(yhat != test_data$mrjmdays) / nrow(test_data)
+}
+
+plot(mtry_values, error_rates, type = "b", xlab = "mtry", ylab = "test MSE",)
+best_mtry <- mtry_values[which.min(error_rates)]
+best_mtry
+```
+
+```{r}
+mrjmdays_rf <- randomForest(mrjmdays ~ ., data = train_data, mtry = best_mtry, importance = TRUE)
+mrjmdays_rf
+```
+
+```{r}
+mrjmdays.pred <- predict(mrjmdays_rf, test_data, type='class')
+accuracy <- 1 - sum(mrjmdays.pred != test_data$mrjmdays) / nrow(test_data)
+paste("Accuracy:", accuracy)
+```
+
+```{r}
+importance(mrjmdays_rf)
+```
+```{r}
+varImpPlot(mrjmdays_rf, cex = 0.55)
+```
+
+
+```{r}
+tree.mrjmdays <- tree(mrjmdays  ~ ., train_data)
+```
+
+```{r}
+plot(tree.mrjmdays)
+text(tree.mrjmdays, pretty = 0)
+```
+
+```{r}
+tree.mrjmdays
+```
+
+```{r}
+summary(tree.mrjmdays)
+```
+
+```{r}
+tree.pred1 <- predict(tree.mrjmdays, test_data,
+    type = "class")
+table(tree.pred1, test_data$mrjmdays)
+accuracy <- sum(diag(confusion_matrix)) / sum(confusion_matrix)
+print(accuracy)
+```
+
+
+
+## regression (irmjfy)
+
+```{r}
+data_for_model3 <- data_clean[, c("irmjfy", demographic_cols,youth_experience_cols)]
+```
+
+```{r}
+indices <- sample(1:nrow(data_for_model3), size = 0.7*nrow(data_for_model3))
+
+# Split data based on indices
+train_data <- data_for_model3[indices, ]
+test_data <-data_for_model3[-indices, ]
+```
+
+```{r}
+lambdas <- seq(0.01, 0.2, by = 0.01)
+test_mse <- numeric(length(lambdas))
+
+for (i in 1:length(lambdas)) {
+  set.seed(1)
+  irmjfy_boost <- gbm(irmjfy~ ., data = train_data,
+                     distribution = "gaussian", n.trees = 500,
+                     interaction.depth = 3, shrinkage = lambdas[i], verbose = F)
+  yhat_boost <- predict(irmjfy_boost, newdata = test_data, n.trees = 500)
+  test_mse[i] <- mean((yhat_boost - test_data$irmjfy)^2)
+}
+
+plot(lambdas, test_mse, type = "b", xlab = "Shrinkage", ylab = "Test Set MSE")
+```
+
+```{r}
+best_lambdas <- lambdas[which.min(error_rates)]
+best_lambdas
+```
+
+```{r}
+irmjfy_boost <- gbm(irmjfy ~ ., data = train_data,
+                    distribution = "gaussian", n.trees = 500,
+                    interaction.depth = 3, shrinkage = best_lambdas, verbose = FALSE)
+
+yhat_boost <- predict(irmjfy_boost, newdata = test_data, n.trees = 500)
+
+mse <- mean((yhat_boost - test_data$irmjfy)^2)
+
+paste("MSE:", mse)
+
+```
+
+
+```{r}
+summary(irmjfy_boost, cBars = 10)
+```
+
+```{r}
+varImpPlot(irmjfy_boost, cex = 0.55)
+```
+
+
+
+```{r}
+tree.irmjfy <- tree(irmjfy  ~ ., train_data)
+```
+
+```{r}
+plot(tree.irmjfy)
+text(tree.irmjfy, pretty = 0, cex= 0.4)
+```
+
+```{r}
+tree.irmjfy
+```
+```{r}
+
+yhat <- predict(tree.irmjfy, newdata = test_data)
+mean((yhat - test_data$irmjfy)^2)
+
+```
+
+```{r}
+summary(tree.irmjfy)
+```
+
+
+
