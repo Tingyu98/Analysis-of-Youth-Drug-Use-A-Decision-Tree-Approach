@@ -14,14 +14,14 @@
 ## Abstract
 This project utilizes decision trees to analyze youth drug use using data from the 2020 National Survey on Drug Use and Health (NSDUH), focusing on youth experiences, demographics, and substance use. Our classification models achieve accuracies above 0.9, indicating effective data analysis. We discover patterns showing how the use of one substance may relate to another and how peer perceptions influence drug use behaviors. By employing decision trees and ensemble methods, we aim to uncover hidden patterns and drive evidence-based interventions to mitigate youth drug use, enhancing our understanding of the complex factors influencing these behaviors.
 
-[⬆ Back to Top](#my-project)
+[Back to Top](#top)
 
 ## Introduction
 Youth drug use is a multifaceted issue that encompasses a range of substances, including tobacco, alcohol, marijuana, and other illegal drugs.The patterns of use among youths can be influenced by various factors such as economic status, peer pressure, family dynamics, health conditions, and the availability of substances. Our project aims to delve into the underlying factors associated with youth drug use.
 
 We leverage decision trees model —a form of machine learning—  to analysis data from the 2020 National Survey on Drug Use and Health (NSDUH). The dataset provides a comprehensive of data and categories available. Our analysis is structured into three distinct domains: youth experiences, demographic factors, and substance use.Through careful selection and processing of the data, we aim to identify underlying patterns and also to provide evidence-based recommendations that can inform strategies to address youth drug use issues.
 
-[⬆ Back to Top](#my-project)
+[Back to Top](#top)
 
 ## Background
 ### Decision Tree
@@ -31,6 +31,7 @@ In our project, we use decision trees for data analysis. These are non-parametri
 Decision trees initiate from a root node and branch out based on decision rules applied to input features. This branching continues until it meets certain criteria such as minimum node size or maximum tree depth, which are adjustable parameters during model training. The leaves of the tree denote outcomes—class labels for classification tasks and continuous values for regression.
 
 The construction of a decision tree involves selecting the best attributes to split the data, guided by metrics like classification error, the Gini index, or entropy, aiming to create homogenous subsets for accurate predictions. And these indicators have been calculated with the following formula:
+
 <img width="791" alt="image" src="https://github.com/user-attachments/assets/6afea562-ade2-43c6-82b0-6ea45ffd52fe" />
 
 ### Decision Tree Ensemble Methods
@@ -41,7 +42,7 @@ Random Forests enhance the bagging approach by introducing feature randomness. I
 
 Boosting is another ensemble technique we'll use in our project,  where each new tree is developed to correct the errors from the previous trees. These models focus on improving accuracy by specifically addressing challenging cases misclassified in earlier iterations. During training, we can adjust the shrinkage (α) to regulate the learning rate, thereby impacting training speed and overall model performance.
 
-[⬆ Back to Top](#my-project)
+[Back to Top](#top)
 
 ## Methodology
 
@@ -64,24 +65,31 @@ For regression, "irmjfy" (frequency of marijuana use in the past year) was chose
 
 ## Results 
 ### Binary classification
-This classification tree model, shown in Figure 1, was built using training data to predict the "mrjflag" variable. It incorporated variables such as "alcflag," "yflmjmo," "stndsmj," "frdmjmon," and "tobflag" in its construction. With 8 terminal nodes, the model achieved a residual mean deviance of 0.4593, indicative of a good fit. It has a misclassification error rate of 0.09796, meaning that around 9.8% of the samples were incorrectly classified. The model's predictions on the test data, presented in Table 1(a), result in an accuracy of approximately 0.9174.
+This classification tree model, shown in Figure 1, was built using training data to predict the "mrjflag" variable. It incorporated variables such as "alcflag," "yflmjmo," "stndsmj," "frdmjmon," and "tobflag" in its construction. With 8 terminal nodes, the model achieved a residual mean deviance of 0.4593, indicative of a good fit. It has a misclassification error rate of 0.09796, meaning that around 9.8% of the samples were incorrectly classified. The model's predictions on the test data, presented in Table 1(a), result in an accuracy of approximately 0.9174. 
+
 <img width="804" alt="image" src="https://github.com/user-attachments/assets/b48175fa-15de-4f14-80bb-692818759d65" />
 <img width="806" alt="image" src="https://github.com/user-attachments/assets/9015f262-6e2d-4999-8446-d173baafb0f7" />
+
 To obtain the most suitable bagging approach, we tuned the models for the values of ntrees (number of trees). The results for the tuning can be seen in Figure 3. We observed that with different values of ntrees, there is not much difference. We were still able to identify the tree number with the lowest error rate, enabling us to proceed with the random forest model using bagging approach and obtain the optimal model. We got the result with each decision tree considering 62 variables at every split. The model yields an out-of-bag (OOB) error estimate of 10.21%, indicating an expected prediction error rate of approximately 10.21% on unseen data. The model's predictions on the test data, presented in Figure 2(b), result in an accuracy of approximately 0.9291, indicating a slight improvement compared to the single decision tree model. Through Figure 4, the Gini Index reflects how each variable contributes to the homogeneity of the nodes and splits in the tree. Variables "alcflag" and "tobflag" show high values, indicating their importance in creating pure nodes in the tree that effectively distinguish between users and non-users of marijuana. This result is similar to that of the previous single decision tree model.
+
 <img width="538" alt="image" src="https://github.com/user-attachments/assets/de6ac160-b4ff-424d-9f31-a125b12f2da3" />
 <img width="576" alt="image" src="https://github.com/user-attachments/assets/cd0dab57-fd73-429c-a35b-9f0530311689" />
+
 ### Multi-class classification
 The single tree model for multi-class classification was constructed using the training data to predict the "mrjflag" variable. It utilized 8 variables and comprised 8 terminal nodes. The model attained a residual mean deviance of 0.4474 and a misclassification error rate of 0.06503. Upon evaluating the model's predictions on the test data, it achieved an accuracy of approximately 0.9291.
 
 To improve the model, we utilized the random forest approach and adjusted the models for various values of mtry. The tuning outcomes are illustrated in Figure 5. The best-performing model was determined with an mtry value of 21. This model yields an out-of-bag (OOB) error estimate of 7%. Furthermore, it achieved an accuracy of 0.9300, slightly exceeding that of the single decision tree model. Through Figure 6, it's evident that variables "EDUSCHGRD2" (current or expected grade level) and "frdmjmon" exhibit high importance values. This highlights their significance in creating pure nodes within the tree, thus aiding in effectively distinguishing different levels of monthly marijuana usage frequency.
+
 <img width="528" alt="image" src="https://github.com/user-attachments/assets/74f5b68c-eabd-4c60-80f5-f2862ddec161" />
 <img width="783" alt="image" src="https://github.com/user-attachments/assets/b02e7dd3-b9cd-4016-bd16-b3e44114918d" />
+
 ### Regression 
 The single tree model for regression was built using the training data to predict the "irmjfy" variable. It employed 6 variables and consisted of 7 terminal nodes. Upon evaluating the model's predictions on the test data, it resulted in a test MSE of approximately 1358.83.
 
 To enhance the model, we applied the boosting approach and adjusted the models for various learning rate values. The optimal model was identified with a learning rate of 0.03 and a maximum depth of 3 for tree growth. This model achieved a test MSE of approximately 1243.07, lower than the single decision tree model.
 
 Through Figure 7, it's evident that variables "prmjmo" (parents' feelings about youth marijuana use) and "stndsmj" exhibit high importance values. This underscores their significance in creating pure nodes within the tree, thus aiding in effectively predicting the number of days of marijuana use in the past year.
+
 <img width="811" alt="image" src="https://github.com/user-attachments/assets/4270073c-2612-4aee-b97d-26be5ab51c01" />
 
 [Back to Top](#top)
