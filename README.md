@@ -14,14 +14,14 @@
 ## Abstract
 This project utilizes decision trees to analyze youth drug use using data from the 2020 National Survey on Drug Use and Health (NSDUH), focusing on youth experiences, demographics, and substance use. Our classification models achieve accuracies above 0.9, indicating effective data analysis. We discover patterns showing how the use of one substance may relate to another and how peer perceptions influence drug use behaviors. By employing decision trees and ensemble methods, we aim to uncover hidden patterns and drive evidence-based interventions to mitigate youth drug use, enhancing our understanding of the complex factors influencing these behaviors.
 
-[Back to Top](# Analysis-of-Youth-Drug-Use-A-Decision-Tree-Approach)
+[Back to Top](#Analysis-of-Youth-Drug-Use-A-Decision-Tree-Approach)
 
 ## Introduction
 Youth drug use is a multifaceted issue that encompasses a range of substances, including tobacco, alcohol, marijuana, and other illegal drugs.The patterns of use among youths can be influenced by various factors such as economic status, peer pressure, family dynamics, health conditions, and the availability of substances. Our project aims to delve into the underlying factors associated with youth drug use.
 
 We leverage decision trees model —a form of machine learning—  to analysis data from the 2020 National Survey on Drug Use and Health (NSDUH). The dataset provides a comprehensive of data and categories available. Our analysis is structured into three distinct domains: youth experiences, demographic factors, and substance use.Through careful selection and processing of the data, we aim to identify underlying patterns and also to provide evidence-based recommendations that can inform strategies to address youth drug use issues.
 
-[Back to Top](# Analysis-of-Youth-Drug-Use-A-Decision-Tree-Approach)
+[Back to Top](#Analysis-of-Youth-Drug-Use-A-Decision-Tree-Approach)
 
 ## Background
 ### Decision Tree
@@ -42,7 +42,7 @@ Random Forests enhance the bagging approach by introducing feature randomness. I
 
 Boosting is another ensemble technique we'll use in our project,  where each new tree is developed to correct the errors from the previous trees. These models focus on improving accuracy by specifically addressing challenging cases misclassified in earlier iterations. During training, we can adjust the shrinkage (α) to regulate the learning rate, thereby impacting training speed and overall model performance.
 
-[Back to Top](# Analysis-of-Youth-Drug-Use-A-Decision-Tree-Approach)
+[Back to Top](#Analysis-of-Youth-Drug-Use-A-Decision-Tree-Approach)
 
 ## Methodology
 
