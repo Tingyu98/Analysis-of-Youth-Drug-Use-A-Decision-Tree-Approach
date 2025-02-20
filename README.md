@@ -61,7 +61,7 @@ In multi-class classification, "mrjmdays" (frequency of marijuana use in the pas
 
 For regression, "irmjfy" (frequency of marijuana use in the past year) was chosen as the response variable, and variables in demographic_cols and youth_experience_cols were used as predictors, to predict the number of days of marijuana use in the past year. A single decision tree was first used for prediction, followed by a boosting approach by adjusting the learning rate to obtain the optimal model.
 
-[Back to Top](#top)
+[Back to Top](#Analysis-of-Youth-Drug-Use-A-Decision-Tree-Approach)
 
 ## Results 
 ### Binary classification
@@ -92,7 +92,7 @@ Through Figure 7, it's evident that variables "prmjmo" (parents' feelings about 
 
 <img width="811" alt="image" src="https://github.com/user-attachments/assets/4270073c-2612-4aee-b97d-26be5ab51c01" />
 
-[Back to Top](#top)
+[Back to Top](#Analysis-of-Youth-Drug-Use-A-Decision-Tree-Approach)
 
 ## Discussion
 ### Flow and Interpretation of a Tree Model
@@ -104,17 +104,17 @@ Variables such as "alcflag" and "tobflag" play a crucial role in predicting mari
 ### Ethical Consideration in Communication
 As data scientists, it is our responsibility to communicate findings ethically. We must present data objectively, without inferring causation from correlation. Our communication should aim to inform, support public health efforts, and contribute to a comprehensive understanding of youth drug use.
 
-[Back to Top](#top)
+[Back to Top](#Analysis-of-Youth-Drug-Use-A-Decision-Tree-Approach)
 
 ## Conclusions
 Our study provided valuable insights into the predictors of youth drug use through decision trees and ensemble methods. The variables related to alcohol and tobacco use, along with perceptions of drug use among peers, emerged as significant predictors. Our findings underscore the interrelated nature of substance use and the social factors surrounding youth. It is important to approach these findings with caution and ethical consideration, recognizing the difference between correlation and causation. The knowledge gained from our models can inform public health strategies aimed at understanding and reducing drug use among youth.
 
-[Back to Top](#top)
+[Back to Top](#Analysis-of-Youth-Drug-Use-A-Decision-Tree-Approach)
 
 ## References
 National Survey on Drug Use and Health (NSDUH), https://www.datafiles.samhsa.gov/dataset/national-survey-drug-use-and-health-2020-nsduh-2020-ds0001
 
-[Back to Top](#top)
+[Back to Top](#Analysis-of-Youth-Drug-Use-A-Decision-Tree-Approach)
 
 
 
