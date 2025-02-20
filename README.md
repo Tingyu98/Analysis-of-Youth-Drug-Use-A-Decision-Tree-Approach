@@ -13,12 +13,14 @@
 
 ## Abstract
 This project utilizes decision trees to analyze youth drug use using data from the 2020 National Survey on Drug Use and Health (NSDUH), focusing on youth experiences, demographics, and substance use. Our classification models achieve accuracies above 0.9, indicating effective data analysis. We discover patterns showing how the use of one substance may relate to another and how peer perceptions influence drug use behaviors. By employing decision trees and ensemble methods, we aim to uncover hidden patterns and drive evidence-based interventions to mitigate youth drug use, enhancing our understanding of the complex factors influencing these behaviors.
+
 [Back to Top](#top)
 
 ## Introduction
 Youth drug use is a multifaceted issue that encompasses a range of substances, including tobacco, alcohol, marijuana, and other illegal drugs.The patterns of use among youths can be influenced by various factors such as economic status, peer pressure, family dynamics, health conditions, and the availability of substances. Our project aims to delve into the underlying factors associated with youth drug use.
 
 We leverage decision trees model —a form of machine learning—  to analysis data from the 2020 National Survey on Drug Use and Health (NSDUH). The dataset provides a comprehensive of data and categories available. Our analysis is structured into three distinct domains: youth experiences, demographic factors, and substance use.Through careful selection and processing of the data, we aim to identify underlying patterns and also to provide evidence-based recommendations that can inform strategies to address youth drug use issues.
+
 [Back to Top](#top)
 
 ## Background
@@ -39,6 +41,8 @@ Random Forests enhance the bagging approach by introducing feature randomness. I
 
 Boosting is another ensemble technique we'll use in our project,  where each new tree is developed to correct the errors from the previous trees. These models focus on improving accuracy by specifically addressing challenging cases misclassified in earlier iterations. During training, we can adjust the shrinkage (α) to regulate the learning rate, thereby impacting training speed and overall model performance.
 
+[Back to Top](#top)
+
 ## Methodology
 
 ### Data Preparation
@@ -55,6 +59,8 @@ For each model, the data was split into 70% for training and the remaining 30% w
 In multi-class classification, "mrjmdays" (frequency of marijuana use in the past month) was selected as the response variable, and variables in demographic_cols and youth_experience_cols were used as predictors, to predict the frequency of marijuana use in the past month. A single decision tree was initially used for prediction, followed by random forest by adjusting the number of variables sampled at each split (mtry) to improve accuracy. 
 
 For regression, "irmjfy" (frequency of marijuana use in the past year) was chosen as the response variable, and variables in demographic_cols and youth_experience_cols were used as predictors, to predict the number of days of marijuana use in the past year. A single decision tree was first used for prediction, followed by a boosting approach by adjusting the learning rate to obtain the optimal model.
+
+[Back to Top](#top)
 
 ## Results 
 ### Binary classification
@@ -78,6 +84,8 @@ To enhance the model, we applied the boosting approach and adjusted the models f
 Through Figure 7, it's evident that variables "prmjmo" (parents' feelings about youth marijuana use) and "stndsmj" exhibit high importance values. This underscores their significance in creating pure nodes within the tree, thus aiding in effectively predicting the number of days of marijuana use in the past year.
 <img width="811" alt="image" src="https://github.com/user-attachments/assets/4270073c-2612-4aee-b97d-26be5ab51c01" />
 
+[Back to Top](#top)
+
 ## Discussion
 ### Flow and Interpretation of a Tree Model
 In the flow of our tree model as depicted in Figure 1,  begins at the root node with an assessment of "alcohol ever used." As the tree branches, a notable split occurs at "any tobacco ever used" , which strongly suggests the influence of alcohol and tobacco use behaviors. The diagram shows that on the left side—where no alcohol use is reported—the analysis tends to predict a lower likelihood of marijuana use. Conversely, on the right side of the tree, where alcohol use is confirmed, and when factoring in friends who neither approve nor disapprove of monthly marijuana use, the likelihood of marijuana use markedly increases.
@@ -88,11 +96,18 @@ Variables such as "alcflag" and "tobflag" play a crucial role in predicting mari
 ### Ethical Consideration in Communication
 As data scientists, it is our responsibility to communicate findings ethically. We must present data objectively, without inferring causation from correlation. Our communication should aim to inform, support public health efforts, and contribute to a comprehensive understanding of youth drug use.
 
+[Back to Top](#top)
+
 ## Conclusions
 Our study provided valuable insights into the predictors of youth drug use through decision trees and ensemble methods. The variables related to alcohol and tobacco use, along with perceptions of drug use among peers, emerged as significant predictors. Our findings underscore the interrelated nature of substance use and the social factors surrounding youth. It is important to approach these findings with caution and ethical consideration, recognizing the difference between correlation and causation. The knowledge gained from our models can inform public health strategies aimed at understanding and reducing drug use among youth.
 
+[Back to Top](#top)
+
 ## References
 National Survey on Drug Use and Health (NSDUH), https://www.datafiles.samhsa.gov/dataset/national-survey-drug-use-and-health-2020-nsduh-2020-ds0001
+
+[Back to Top](#top)
+
 
 
 
